@@ -68,6 +68,8 @@ namespace WorkingWithLinq
 
         public List<Car> processFile(string path)
         {
+            // Skip first line and take all lines that length in bigger than 1
+            // Select and convert each line to object using Car.parseFromCsv
             return File.ReadAllLines(path).Skip(1).Where(l => l.Length > 1)
                 .Select(Car.parseFromCsv).ToList();
         }
@@ -75,8 +77,15 @@ namespace WorkingWithLinq
 
         public void showTop10SortedMostEfficientBmwFrom2016(IEnumerable<Car> cars)
         {
+            // get cars that have year 2016 and manufacturer BMW
+            // order by the combined and then (secondary sort) by name 
+            // (will sort group of cars with same 'combined'. take 10
             var query = cars.Where(c => c.Year == 2016 && c.Manufacturer == "BMW")
                 .OrderByDescending(c => c.Combined).ThenBy(c => c.Name);
+
+            // can also do .First(). will return the first Car in qurey.
+            // this will return the first car of 2016 - First(c => c.Year == 2016)
+
             foreach(Car c in query.Take(10))
             {
                 Console.WriteLine(string.Format("Name: {0}, Combined: {1}, Year: {2}", c.Name, c.Combined, c.Year));
@@ -86,6 +95,7 @@ namespace WorkingWithLinq
 
         public void showAllPassengersFromTop3Cars(IEnumerable<Car> cars)
         {
+            // select all the passengers in the top 3 cars after sort by name
             var query = cars.OrderBy(c => c.Name).Take(3).SelectMany(c => c.Passengers);
             foreach (var person in query)
             {
