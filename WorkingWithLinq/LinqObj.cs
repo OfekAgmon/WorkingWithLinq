@@ -189,6 +189,7 @@ namespace WorkingWithLinq
                 {
                     Console.WriteLine($"\t{car.Name} : {car.Combined}");
                 }
+                Console.WriteLine("*******");
             }
         }
 
@@ -212,6 +213,7 @@ namespace WorkingWithLinq
                 Console.WriteLine($"\tmax: {carStatistics.Max}");
                 Console.WriteLine($"\tavg: {carStatistics.Avg}");
             }
+            Console.WriteLine("*******");
         }
 
         public void createCarsXml(IEnumerable<Car> cars)
@@ -230,13 +232,28 @@ namespace WorkingWithLinq
 
             //creates 
 
-//            <? xml version = "1.0" encoding = "utf-8" ?>
-//            < Cars >
-//                < Car Name = "4C" Combined = "28" Manufacturer = "ALFA ROMEO" />
-//                < Car Name = "V12 Vantage S" Combined = "14" Manufacturer = "Aston Martin Lagonda Ltd" />
-//                ...
-//            </ Cars >
+            //            <? xml version = "1.0" encoding = "utf-8" ?>
+            //            < Cars >
+            //                < Car Name = "4C" Combined = "28" Manufacturer = "ALFA ROMEO" />
+            //                < Car Name = "V12 Vantage S" Combined = "14" Manufacturer = "Aston Martin Lagonda Ltd" />
+            //                ...
+            //            </ Cars >
 
+        }
+
+        public void qureyXml()
+        {
+            var document = XDocument.Load("fuel.xml");
+            var query =
+                from elemnt in document.Element("Cars").Elements("Car")
+                where elemnt.Attribute("Manufacturer").Value == "BMW"
+                select elemnt.Attribute("Name").Value;
+
+            foreach (var name in query)
+            {
+                Console.WriteLine("name: " + name);
+            }
+            Console.WriteLine("*******");
         }
 
     }
