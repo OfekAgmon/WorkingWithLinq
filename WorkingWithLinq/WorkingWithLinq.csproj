@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="LinqObj.cs" />
     <Compile Include="model\Car.cs" />
+    <Compile Include="model\Manufacturer.cs" />
     <Compile Include="OfekExtensions.cs" />
     <Compile Include="model\Person.cs" />
     <Compile Include="Program.cs" />
@@ -53,6 +54,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="fuel.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="manufacturers.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

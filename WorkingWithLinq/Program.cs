@@ -17,9 +17,14 @@ namespace WorkingWithLinq
             linq.printOnlyTopThreeAlpha();
             linq.printAbove175();
             linq.showExtenstionsMethods();
-            IEnumerable<Car> cars = linq.processFile("fuel.csv");
+            IEnumerable<Car> cars = linq.perocessCars("fuel.csv");
+            IEnumerable<Manufacturer> manufacturers = linq.processManufacturers("manufacturers.csv");
             linq.showTop10SortedMostEfficientBmwFrom2016(cars);
             linq.showAllPassengersFromTop3Cars(cars);
+            linq.groupByCarManufacturer(cars);
+            linq.groupJoinCarsBynManufacturerCountry(cars, manufacturers);
+            linq.showMinMaxAverageCarsPerManufacturer(cars);
+//            linq.showMostEfficientManufacturersCounty(cars, manufacturers);
         }
     }
 }

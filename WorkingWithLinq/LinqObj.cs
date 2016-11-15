@@ -66,12 +66,29 @@ namespace WorkingWithLinq
         }
 
 
-        public List<Car> processFile(string path)
+        public List<Car> perocessCars(string path)
         {
             // Skip first line and take all lines that length in bigger than 1
             // Select and convert each line to object using Car.parseFromCsv
             return File.ReadAllLines(path).Skip(1).Where(l => l.Length > 1)
                 .Select(Car.parseFromCsv).ToList();
+        }
+
+        public List<Manufacturer> processManufacturers(string path)
+        {
+            var qurey = File.ReadAllLines(path).Where(l => l.Length > 1)
+                .Select(l =>
+                {
+                    var columns = l.Split(',');
+                    return new Manufacturer
+                    {
+                        Name = columns[0],
+                        Headquarters = columns[1],
+                        Year = int.Parse(columns[2
+                        ])
+                    };
+                });
+            return qurey.ToList();
         }
 
 
@@ -86,7 +103,7 @@ namespace WorkingWithLinq
             // can also do .First(). will return the first Car in qurey.
             // this will return the first car of 2016 - First(c => c.Year == 2016)
 
-            foreach(Car c in query.Take(10))
+            foreach (Car c in query.Take(10))
             {
                 Console.WriteLine(string.Format("Name: {0}, Combined: {1}, Year: {2}", c.Name, c.Combined, c.Year));
             }
@@ -102,6 +119,98 @@ namespace WorkingWithLinq
                 Console.WriteLine(person.ToString());
             }
             Console.WriteLine("*******");
+        }
+
+        public void showMostEfficientManufacturersCounty(IEnumerable<Car> cars, IEnumerable<Manufacturer> manufacturers)
+        {
+            // join both cars and manufacturers 
+            // where car's Manufacturer equal to manufacturer's Name
+            // select new anonimus obj that's holding 
+            //            manufacturer.Headquarters,
+            //            car.Name,
+            //            car.Combined
+            var query = from car in cars
+                        join manufacturer in manufacturers
+                        on car.Manufacturer equals manufacturer.Name
+                        orderby car.Combined descending
+                        select new
+                        {
+                            manufacturer.Headquarters,
+                            car.Name,
+                            car.Combined
+                        };
+
+            foreach (var carSummary in query)
+            {
+                Console.WriteLine(carSummary.Headquarters + " " + carSummary.Name + " " + carSummary.Combined);
+            }
+            Console.WriteLine(query.ToList().Count);
+            Console.WriteLine("*******");
+        }
+
+        public void groupByCarManufacturer(IEnumerable<Car> cars)
+        {
+            // group by manufacturer key
+            // print for each groupBy sequence how many items it has
+            var qurey = cars.GroupBy(c => c.Manufacturer);
+            foreach (var result in qurey.Take(30))
+            {
+                Console.WriteLine($"{result.Key} has {result.Count()} cars");
+            }
+            Console.WriteLine("*******");
+        }
+
+        public void groupJoinCarsBynManufacturerCountry(IEnumerable<Car> cars, IEnumerable<Manufacturer> manufacturers)
+        {
+            // create grouping of cars by their matching manufacturer's country
+            // so group by manufacturer.Name equals car.Manufacturer
+            // take those car-groups and put into carGroup
+            // project (select) into new object containing the Manufacturer object 
+            // and its matching Cars group
+
+            // print for each manufaturer its name and country
+            // and its top 2 cars in its group
+            var query = from manufacturer in manufacturers
+                        join car in cars
+                        on manufacturer.Name equals car.Manufacturer
+                        into carGroup
+                        select new
+                        {
+                            Manufacturer = manufacturer,
+                            Cars = carGroup,
+
+                        };
+
+            foreach (var carsGroup in query)
+            {
+                Console.WriteLine($"{carsGroup.Manufacturer.Name}:{carsGroup.Manufacturer.Headquarters}");
+                foreach (var car in carsGroup.Cars.Take(2))
+                {
+                    Console.WriteLine($"\t{car.Name} : {car.Combined}");
+                }
+            }
+        }
+
+        public void showMinMaxAverageCarsPerManufacturer(IEnumerable<Car> cars)
+        {
+            var query = from car in cars
+                group car by car.Manufacturer
+                into carGroup
+                select new
+                {
+                    Name = carGroup.Key,
+                    Max = carGroup.Max(c => c.Combined),
+                    Min = carGroup.Min(c => c.Combined),
+                    Avg = carGroup.Average(c => c.Combined)
+                };
+
+            foreach (var carStatistics in query)
+            {
+                Console.WriteLine($"{carStatistics.Name}");
+                Console.WriteLine($"\tmin: {carStatistics.Min}");
+                Console.WriteLine($"\tmax: {carStatistics.Max}");
+                Console.WriteLine($"\tavg: {carStatistics.Avg}");
+            }
         }
 
     }
