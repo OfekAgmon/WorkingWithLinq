@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using WorkingWithLinq.model;
 
 namespace WorkingWithLinq
@@ -194,15 +195,15 @@ namespace WorkingWithLinq
         public void showMinMaxAverageCarsPerManufacturer(IEnumerable<Car> cars)
         {
             var query = from car in cars
-                group car by car.Manufacturer
+                        group car by car.Manufacturer
                 into carGroup
-                select new
-                {
-                    Name = carGroup.Key,
-                    Max = carGroup.Max(c => c.Combined),
-                    Min = carGroup.Min(c => c.Combined),
-                    Avg = carGroup.Average(c => c.Combined)
-                };
+                        select new
+                        {
+                            Name = carGroup.Key,
+                            Max = carGroup.Max(c => c.Combined),
+                            Min = carGroup.Min(c => c.Combined),
+                            Avg = carGroup.Average(c => c.Combined)
+                        };
 
             foreach (var carStatistics in query)
             {
@@ -211,6 +212,31 @@ namespace WorkingWithLinq
                 Console.WriteLine($"\tmax: {carStatistics.Max}");
                 Console.WriteLine($"\tavg: {carStatistics.Avg}");
             }
+        }
+
+        public void createCarsXml(IEnumerable<Car> cars)
+        {
+            var document = new XDocument();
+            var carsElemt = new XElement("Cars",
+                from car in cars
+                select new XElement("Car",
+                new XAttribute("Name", car.Name),
+                new XAttribute("Combined", car.Combined),
+                new XAttribute("Manufacturer", car.Manufacturer))
+                );
+
+            document.Add(carsElemt);
+            document.Save("fuel.xml");
+
+            //creates 
+
+//            <? xml version = "1.0" encoding = "utf-8" ?>
+//            < Cars >
+//                < Car Name = "4C" Combined = "28" Manufacturer = "ALFA ROMEO" />
+//                < Car Name = "V12 Vantage S" Combined = "14" Manufacturer = "Aston Martin Lagonda Ltd" />
+//                ...
+//            </ Cars >
+
         }
 
     }
