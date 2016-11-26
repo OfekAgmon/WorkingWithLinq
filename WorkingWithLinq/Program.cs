@@ -29,7 +29,7 @@ namespace WorkingWithLinq
             linq.qureyXml();
 
 
-            // new chnage on master!
+            // newest change on master!
         }
     }
 }
