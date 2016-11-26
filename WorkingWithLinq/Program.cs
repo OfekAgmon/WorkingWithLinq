@@ -30,6 +30,8 @@ namespace WorkingWithLinq
 
 
             // new chnage on master!
+
+            // newest chnage on branch!
         }
     }
 }
