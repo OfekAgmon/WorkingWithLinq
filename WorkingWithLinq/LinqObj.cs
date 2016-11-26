@@ -241,7 +241,7 @@ namespace WorkingWithLinq
 
         }
 
-        public void qureyXml()
+        public void qureyXmlFile()
         {
             var document = XDocument.Load("fuel.xml");
             var query =
