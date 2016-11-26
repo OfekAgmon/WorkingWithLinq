@@ -27,6 +27,9 @@ namespace WorkingWithLinq
 //            linq.showMostEfficientManufacturersCounty(cars, manufacturers);
             linq.createCarsXmlFile(cars);
             linq.qureyXml();
+
+
+            // new chnage on master!
         }
     }
 }
