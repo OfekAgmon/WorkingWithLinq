@@ -25,8 +25,13 @@ namespace WorkingWithLinq
             linq.groupJoinCarsBynManufacturerCountry(cars, manufacturers);
             linq.showMinMaxAverageCarsPerManufacturer(cars);
 //            linq.showMostEfficientManufacturersCounty(cars, manufacturers);
+<<<<<<< HEAD
             linq.createCarsXml(cars);
             linq.qureyXmlFromFile();
+=======
+            linq.createCarsXmlFile(cars);
+            linq.qureyXml();
+>>>>>>> 37fd9a3163045aac6bd563605f5ae3a940bc0db8
         }
     }
 }

@@ -216,7 +216,7 @@ namespace WorkingWithLinq
             Console.WriteLine("*******");
         }
 
-        public void createCarsXml(IEnumerable<Car> cars)
+        public void createCarsXmlFile(IEnumerable<Car> cars)
         {
             var document = new XDocument();
             var carsElemt = new XElement("Cars",
@@ -241,7 +241,7 @@ namespace WorkingWithLinq
 
         }
 
-        public void qureyXmlFromFile()
+        public void qureyXml()
         {
             var document = XDocument.Load("fuel.xml");
             var query =
